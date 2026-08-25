@@ -9,7 +9,7 @@ The repository contains the complete released neural architecture, the staged
 source-only training programs, deployable inference code, immutable
 configurations, released weights, reproduced results, and contract tests.  The
 training and inference packages instantiate the same
-`DualViewKoopmanMoriField`; the deployment model is not a reduced surrogate.
+`DualViewKoopmanMoriField`. The deployment model is not a reduced surrogate.
 
 ```text
 configs/       immutable HUST and Data_final inference contracts
@@ -75,12 +75,12 @@ Data_final 2026 mixed stream: second BAcc `1.000000`, packet-weighted BAcc
 The complete computation is summarized in [docs/METHOD.md](docs/METHOD.md).
 The short version is:
 
-1. convert each completed second into generic subband-envelope trajectories;
-2. map time to measured shaft angle and retain the full angular Nyquist grid;
-3. pretrain a causal Koopman–Mori neural field by source forecasting;
-4. refine that field with whole-source pseudo-held-bearing classification;
-5. read health with learned full-mode attention;
-6. read fault operation with a source-support-conditioned query-adaptive metric;
+1. convert each completed second into generic subband-envelope trajectories
+2. map time to measured shaft angle and retain the full angular Nyquist grid
+3. pretrain a causal Koopman–Mori neural field by source forecasting
+4. refine that field with whole-source pseudo-held-bearing classification
+5. read health with learned full-mode attention
+6. read fault operation with a source-support-conditioned query-adaptive metric
 7. accumulate local evidence causally.
 
 This is a learned neural dynamical model with explicit physical inductive bias,

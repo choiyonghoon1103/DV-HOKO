@@ -24,8 +24,8 @@ python training/scripts/prepare_hust.py \
   --output training/artifacts/hust/subband_cache
 ```
 
-The released folds came from the following staged algorithm.  Run every held
-bearing (`6205`, `6206`, `6207`, `6208`); the examples show one fold.
+The released folds came from the following staged algorithm. Run every held
+bearing (`6205`, `6206`, `6207`, `6208`). The examples show one fold.
 
 ```bash
 # Initial source-only dynamics and query-adaptive operation metric.
@@ -54,17 +54,17 @@ python training/scripts/run_hust_attentive_health.py \
 The released `6208` refinement config intentionally points to the recorded
 fallback initial dynamics checkpoint.  A byte-identical regeneration therefore
 requires the corresponding initial stage under
-`model_full_nyquist.json`; a new clean study should instead declare one uniform
+`model_full_nyquist.json`. A new clean study should instead declare one uniform
 initialization rule before fitting. Released hashes identify the packaged
-checkpoints; a fresh training run receives its own hashes.
+checkpoints. A fresh training run receives its own hashes.
 
 After all folds exist, `training/scripts/export_hust_release.py` assembles the
-deployable checkpoint.  It writes source centroids and support fields; no held
+deployable checkpoint. It writes source centroids and support fields. No held
 bearing value is fitted.
 
 The retained dynamics pretraining is not cosmetic. A frozen random-dynamics
 control reached mean final BAcc `0.888889`, prefix BAcc `0.902778`, and NLL
-`0.525701`; dynamics pretraining improved these to `0.972222`, `0.938889`, and
+`0.525701`. Dynamics pretraining improved these to `0.972222`, `0.938889`, and
 `0.322599`. The final classification-only refinement reached `1.000000`,
 `0.991667`, and `0.120696` on the conditional fault-operation task. Keeping the
 forecast loss active during that final refinement was weaker (`1.000000`,

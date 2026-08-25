@@ -26,8 +26,8 @@ bias and requires speed measurement at deployment.
 A balanced attention mixer maps 32 generic subbands to four learned carrier
 paths. For each angular mode, the network receives:
 
-- its complex resolved trajectory;
-- the same trajectory under exact rotational Koopman transport;
+- its complex resolved trajectory
+- the same trajectory under exact rotational Koopman transport
 - the one-step Mori innovation between observation and transported state.
 
 A causal Transformer summarizes the trajectory. A shared order embedding and
@@ -45,7 +45,7 @@ discovered physical law.
 
 The model decomposes a four-class label into:
 
-1. **health state:** `N` versus fault;
+1. **health state:** `N` versus fault
 2. **fault operation:** conditional `I/O/B` identity.
 
 Both readouts use the same frozen Koopman–Mori trunk.
@@ -70,7 +70,7 @@ start. The four-class probability is
 `[P(normal), P(fault) P(I|fault), P(fault) P(O|fault), P(fault) P(B|fault)]`.
 
 No future sample, target fit, or prediction-conditioned reset is used. `final
-BAcc` evaluates only the last prefix; `prefix BAcc` averages all causal
+BAcc` evaluates only the last prefix. `prefix BAcc` averages all causal
 prefixes and is the stricter online measure.
 
 ## Data_final

@@ -14,11 +14,11 @@ export CUBLAS_WORKSPACE_CONFIG=:4096:8
 
 The HUST release is staged rather than a single end-to-end checkpoint fit:
 
-1. deterministic raw-waveform envelope cache;
-2. source-only Koopman--Mori forecast training and operation metric;
+1. deterministic raw-waveform envelope cache
+2. source-only Koopman--Mori forecast training and operation metric
 3. whole-source pseudo-held-bearing classification refinement of the
-   pretrained dynamical trunk, without an auxiliary forecast-retention loss;
-4. frozen-trunk full-mode health attention;
+   pretrained dynamical trunk, without an auxiliary forecast-retention loss
+4. frozen-trunk full-mode health attention
 5. export of the source-induced memories and learned weights.
 
 The Final project model has a separate native-spectrum adapter but calls the
