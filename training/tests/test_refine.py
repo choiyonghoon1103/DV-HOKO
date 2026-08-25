@@ -1,6 +1,6 @@
 import torch
 
-from hoko.dynamics.refine import meta_query_risk
+from hoko.dynamics.refine import meta_query_risk, normalized_refinement_objective
 from hoko.dynamics.train import angular_paths
 from hoko.memory.model import QueryAdaptiveSupportConditionedMahalanobisMetric
 
@@ -52,3 +52,30 @@ def test_frozen_metric_meta_risk_reaches_source_and_query_fields():
     assert set(per_bearing) == set(bearings)
     assert all(value.grad is not None and torch.isfinite(value.grad).all() for value in leaves)
     assert all(parameter.grad is None for parameter in metric.parameters())
+
+
+def test_refinement_objective_preserves_equal_weight_default():
+    observed = normalized_refinement_objective(
+        torch.tensor(3.0),
+        torch.tensor(10.0),
+        torch.tensor(2.0),
+        torch.tensor(4.0),
+        {},
+    )
+    assert torch.allclose(observed, torch.tensor(2.0))
+
+
+def test_refinement_objective_can_isolate_meta_classification_loss():
+    meta = torch.tensor(3.0, requires_grad=True)
+    forecast = torch.tensor(10.0, requires_grad=True)
+    objective = normalized_refinement_objective(
+        meta,
+        forecast,
+        torch.tensor(2.0),
+        torch.tensor(4.0),
+        {"meta_query_weight": 1.0, "forecast_retention_weight": 0.0},
+    )
+    objective.backward()
+    assert torch.allclose(objective, torch.tensor(1.5))
+    assert torch.allclose(meta.grad, torch.tensor(0.5))
+    assert torch.allclose(forecast.grad, torch.tensor(0.0))

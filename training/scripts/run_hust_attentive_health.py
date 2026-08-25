@@ -48,8 +48,12 @@ def main() -> None:
         device_name = "cpu"
     device = torch.device(device_name)
     torch.use_deterministic_algorithms(True)
-    rows = discover_hust_records(args.data_root, bearings)
-    load_subband_cache(rows, ROOT / config["subband_cache_root"])
+    rows = discover_hust_records(args.data_root, sources)
+    load_subband_cache(
+        rows,
+        ROOT / config["subband_cache_root"],
+        allow_manifest_subset=True,
+    )
     dynamics_checkpoint = (
         ROOT / config["refined_dynamics_root"] / "dynamics"
         / f"heldout_{held}" / "dynamics_terminal.pt"
@@ -66,14 +70,27 @@ def main() -> None:
     decoder, trace = fit_attentive_state_view(
         rows, held, bearings, config, device, state_checkpoint
     )
-    health = attentive_health_streams(decoder, rows, held, sources, device)
     metric_checkpoint = (
         ROOT / config["operation_metric_root"] / f"heldout_{held}" / "metric_terminal.pt"
     )
     metric, _ = load_metric(metric_config, device, metric_checkpoint)
     orders = torch.from_numpy(order_grid(dynamics_config)).to(device)
+
+    target_rows = discover_hust_records(args.data_root, (held,))
+    load_subband_cache(
+        target_rows,
+        ROOT / config["subband_cache_root"],
+        allow_manifest_subset=True,
+    )
+    for row in target_rows:
+        row["frozen_field"] = record_field(model, mixer, row, dynamics_config, device)
+        row["frozen_state_modes"] = record_state_modes(
+            model, mixer, row, dynamics_config, device
+        )
+    rows = rows + target_rows
+    health = attentive_health_streams(decoder, rows, held, sources, device)
     operation, _ = operation_streams(metric, rows, held, sources, orders, device)
-    query = [row for row in rows if str(row["bearing"]) == held]
+    query = target_rows
     result = {
         "schema": config["schema"],
         "status": "complete",
@@ -87,6 +104,7 @@ def main() -> None:
         "operation_metric_checkpoint_sha256": sha256(metric_checkpoint),
         "state_checkpoint_sha256": sha256(state_checkpoint),
         "shared_trunk_and_operation_metric_frozen": True,
+        "held_bearing_arrays_loaded_during_fit": False,
         "held_bearing_resources_used_for_fit": 0,
     }
     output = args.artifact_root / f"heldout_{held}.json"

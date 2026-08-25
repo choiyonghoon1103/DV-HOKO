@@ -16,7 +16,8 @@ The HUST release is staged rather than a single end-to-end checkpoint fit:
 
 1. deterministic raw-waveform envelope cache;
 2. source-only Koopman--Mori forecast training and operation metric;
-3. whole-source pseudo-held-bearing refinement of the dynamical trunk;
+3. whole-source pseudo-held-bearing classification refinement of the
+   pretrained dynamical trunk, without an auxiliary forecast-retention loss;
 4. frozen-trunk full-mode health attention;
 5. export of the source-induced memories and learned weights.
 
@@ -24,4 +25,4 @@ The Final project model has a separate native-spectrum adapter but calls the
 same public `dvhoko.model.DualViewKoopmanMoriField`.  Its training command seals
 the 2024 source checkpoint before opening the 2026 target path.
 
-See `../docs/TRAINING.md` for exact commands and limitations.
+See `../docs/TRAINING.md` for exact commands and reproducibility details.

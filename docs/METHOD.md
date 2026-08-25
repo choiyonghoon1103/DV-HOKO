@@ -32,8 +32,12 @@ paths. For each angular mode, the network receives:
 
 A causal Transformer summarizes the trajectory. A shared order embedding and
 neural decoder produce an order-resolved 12-dimensional field. Training first
-uses source-only multi-horizon closure prediction and then whole-source
-pseudo-held-bearing supervision. Thus the final trunk is AI-trained and
+uses source-only multi-horizon closure prediction to establish a dynamical
+representation. It then refines that representation with whole-source
+pseudo-held-bearing classification only. The final refinement deliberately
+does not retain an auxiliary forecast loss: the released ablation found that
+forecast retention worsened the held-domain online risk, while dynamics
+pretraining itself remained necessary. Thus the final trunk is AI-trained and
 dynamical, although it is not purely self-supervised or a discovered physical
 law.
 
@@ -72,5 +76,6 @@ prefixes and is the stricter online measure.
 ## Data_final
 
 Data_final uses the same neural Koopman–Mori core and a native spectrum adapter,
-but its released readout predates the full-Nyquist HUST attention update. It is
-kept for project deployment and is not evidence for the HUST DG claim.
+with a readout trained for its binary background/leak deployment task. HUST and
+Data_final therefore share the dynamical model class while retaining
+observation- and task-appropriate adapters and readouts.

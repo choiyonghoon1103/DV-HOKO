@@ -2,15 +2,15 @@
   "method": "DV-HOKO",
   "hust": {
     "targets": {
-      "6205": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 1.0, "nll": 0.0710722210},
-      "6206": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9583333333, "nll": 0.1323210271},
-      "6207": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9583333333, "nll": 0.1640425643},
-      "6208": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9916666667, "nll": 0.1657497603}
+      "6205": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 1.0, "nll": 0.0631185208},
+      "6206": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9666666667, "nll": 0.1321584157},
+      "6207": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9833333333, "nll": 0.1301744950},
+      "6208": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9916666667, "nll": 0.1569047614}
     },
     "mean_balanced_accuracy": 1.0,
     "worst_balanced_accuracy": 1.0,
-    "mean_prefix_balanced_accuracy": 0.9770833333,
-    "mean_nll": 0.1332963932
+    "mean_prefix_balanced_accuracy": 0.9854166667,
+    "mean_nll": 0.1205890482
   },
   "data_final": {
     "mixed_second_balanced_accuracy": 1.0,

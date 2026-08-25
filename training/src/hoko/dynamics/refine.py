@@ -2,8 +2,8 @@
 
 The class memory is frozen.  Whole-source pseudo-held classification losses
 are differentiated through that memory into the Koopman--Mori field encoder
-and learned subband mixer.  A normalized forecast objective retains the
-class-free dynamical task learned during pretraining.
+and learned subband mixer.  The objective can retain a normalized forecast
+risk, or set its declared weight to zero after source dynamics pretraining.
 """
 
 from __future__ import annotations
@@ -20,6 +20,28 @@ from hoko.dynamics.train import angular_paths, _observation_orders
 from hoko.dynamics.factory import build_model
 from hoko.dynamics.train import build_mixer
 from hoko.memory.train import _class_prefix_risks, _query_batch, _support_cells
+
+
+def normalized_refinement_objective(
+    meta: Tensor,
+    forecast: Tensor,
+    initial_meta: Tensor,
+    initial_forecast: Tensor,
+    objective_config: dict,
+) -> Tensor:
+    """Combine normalized task and dynamics risks with declared fixed weights."""
+
+    meta_weight = float(objective_config.get("meta_query_weight", 0.5))
+    forecast_weight = float(objective_config.get("forecast_retention_weight", 0.5))
+    if meta_weight < 0.0 or forecast_weight < 0.0:
+        raise ValueError("refinement objective weights cannot be negative")
+    total = meta_weight + forecast_weight
+    if total <= 0.0:
+        raise ValueError("at least one refinement objective weight must be positive")
+    return (
+        meta_weight * (meta / initial_meta)
+        + forecast_weight * (forecast / initial_forecast)
+    ) / total
 
 
 def differentiable_fields(
@@ -143,6 +165,7 @@ def refine_fold(
     trace = []
     initial_meta = None
     initial_forecast = None
+    objective_config = refinement_config.get("objective", {})
 
     for update in range(1, updates + 1):
         optimizer.zero_grad(set_to_none=True)
@@ -162,8 +185,12 @@ def refine_fold(
         if initial_meta is None:
             initial_meta = meta.detach().clamp_min(1e-12)
             initial_forecast = forecast.detach().clamp_min(1e-12)
-        objective = 0.5 * (
-            meta / initial_meta + forecast / initial_forecast
+        objective = normalized_refinement_objective(
+            meta,
+            forecast,
+            initial_meta,
+            initial_forecast,
+            objective_config,
         )
         objective.backward()
         gradient = torch.nn.utils.clip_grad_norm_(
@@ -211,6 +238,10 @@ def refine_fold(
             "initial_class_free_forecast_risk": float(initial_forecast),
             "metric_parameters_updated": False,
             "candidate_labels": labels,
+            "meta_query_weight": float(objective_config.get("meta_query_weight", 0.5)),
+            "forecast_retention_weight": float(
+                objective_config.get("forecast_retention_weight", 0.5)
+            ),
             "class_loss_gradient_reached_dynamics": True,
             "class_loss_gradient_reached_filterbank": True,
             "held_bearing_resources_used_for_fit": 0,
@@ -249,5 +280,6 @@ __all__ = [
     "differentiable_fields",
     "load_refined_fold",
     "meta_query_risk",
+    "normalized_refinement_objective",
     "refine_fold",
 ]

@@ -1,0 +1,43 @@
+{
+  "schema": "hoko-full-angular-nyquist-source-meta-classification-only-hust-lodo-v1",
+  "status": "released source-only task refinement",
+  "bearings": ["6205", "6206", "6207", "6208"],
+  "classes": ["N", "I", "O", "B"],
+  "dynamics_config": "configs/hust/dynamics_full_nyquist.json",
+  "metric_config": "configs/hust/model_full_nyquist_query_adaptive.json",
+  "dynamics_checkpoint_root": "artifacts/hust_full_nyquist_query_adaptive_v1/dynamics",
+  "dynamics_checkpoint_by_held": {
+    "6208": "artifacts/hust_full_nyquist_v1/dynamics/heldout_6208/dynamics_terminal.pt"
+  },
+  "metric_checkpoint_root": "artifacts/hust_full_nyquist_query_adaptive_v1/metric",
+  "subband_cache_root": "artifacts/hust/subband_cache",
+  "runtime": {
+    "fourier_backend": "explicit_selected_dft",
+    "reason": "algebraic selected-bin fallback for the unavailable legacy CUDA cuFFT plan"
+  },
+  "optimization": {
+    "seed": 7901,
+    "updates": 300,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 5.0,
+    "log_every": 25,
+    "checkpoint": "terminal_only"
+  },
+  "objective": {
+    "source_loeo_meta_query_nll": true,
+    "class_free_forecast_retention": false,
+    "initial_risk_normalization": true,
+    "meta_query_weight": 1.0,
+    "forecast_retention_weight": 0.0,
+    "metric_parameters_frozen": true
+  },
+  "contract": {
+    "training_order": "class-free dynamics pretraining then source-LOEO task refinement",
+    "full_angular_nyquist_support": true,
+    "manual_fault_order_crop_used": false,
+    "held_bearing_used_for_fit": false,
+    "target_statistics_used": false,
+    "target_checkpoint_selection": false
+  }
+}

@@ -59,13 +59,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--release-root", type=Path, required=True)
+    parser.add_argument(
+        "--health-config",
+        type=Path,
+        default=ROOT / "configs/hust/model_full_nyquist_attentive_health.json",
+    )
+    parser.add_argument(
+        "--health-artifact-root",
+        type=Path,
+        default=ROOT / "artifacts/hust_attentive_health_v1",
+    )
     parser.add_argument("--device", default="cpu")
     args = parser.parse_args()
     device = torch.device(args.device)
     release = args.release_root.resolve()
-    health_config = json.loads(
-        (ROOT / "configs/hust/model_full_nyquist_attentive_health.json").read_text()
-    )
+    health_config_path = args.health_config.resolve()
+    health_config = json.loads(health_config_path.read_text())
     dynamics = json.loads((ROOT / health_config["dynamics_config"]).read_text())
     dynamics = copy.deepcopy(dynamics)
     dynamics["observation"]["fourier_backend"] = "explicit_selected_dft"
@@ -92,7 +101,7 @@ def main() -> None:
                 model, mixer, row, dynamics, device
             )
         health_path = (
-            ROOT / "artifacts/hust_attentive_health_v1/state"
+            args.health_artifact_root.resolve() / "state"
             / f"heldout_{held}" / "state_terminal.pt"
         )
         health_payload = torch.load(health_path, map_location=device, weights_only=False)
@@ -126,6 +135,7 @@ def main() -> None:
             "dynamics_checkpoint_sha256": sha256(dynamics_path),
             "health_checkpoint_sha256": sha256(health_path),
             "operation_checkpoint_sha256": sha256(metric_path),
+            "health_config_sha256": sha256(health_config_path),
             "target_resources_used_for_fit": 0,
             "shaft_clock_contract": "record-observed fs; no target-fitted statistic",
         }

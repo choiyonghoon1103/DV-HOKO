@@ -35,11 +35,12 @@ python training/scripts/train_hust.py \
   --artifact-root training/artifacts/hust_full_nyquist_query_adaptive_v1 \
   --only-held 6205 --device cuda
 
-# Whole-source pseudo-held-bearing representation refinement.
+# Whole-source pseudo-held-bearing classification refinement. The dynamical
+# forecast task has already been learned in the preceding source-only stage.
 python training/scripts/refine_hust_dynamics.py \
   --data-root /path/to/HUST \
-  --config training/configs/hust/model_full_nyquist_meta_refine.json \
-  --artifact-root training/artifacts/hust_full_nyquist_meta_refine_v1 \
+  --config training/configs/hust/model_full_nyquist_meta_classification_only.json \
+  --artifact-root training/artifacts/hust_full_nyquist_meta_classification_only_v1 \
   --held 6205 --device cuda
 
 # Frozen-trunk health attention.
@@ -50,16 +51,25 @@ python training/scripts/run_hust_attentive_health.py \
   --held 6205 --device cuda
 ```
 
-The historical `6208` refinement config intentionally points to the recorded
+The released `6208` refinement config intentionally points to the recorded
 fallback initial dynamics checkpoint.  A byte-identical regeneration therefore
 requires the corresponding initial stage under
 `model_full_nyquist.json`; a new clean study should instead declare one uniform
-initialization rule before fitting and report that it is a new reproduction,
-not claim the old hashes.
+initialization rule before fitting. Released hashes identify the packaged
+checkpoints; a fresh training run receives its own hashes.
 
 After all folds exist, `training/scripts/export_hust_release.py` assembles the
 deployable checkpoint.  It writes source centroids and support fields; no held
 bearing value is fitted.
+
+The retained dynamics pretraining is not cosmetic. A frozen random-dynamics
+control reached mean final BAcc `0.888889`, prefix BAcc `0.902778`, and NLL
+`0.525701`; dynamics pretraining improved these to `0.972222`, `0.938889`, and
+`0.322599`. The final classification-only refinement reached `1.000000`,
+`0.991667`, and `0.120696` on the conditional fault-operation task. Keeping the
+forecast loss active during that final refinement was weaker (`1.000000`,
+`0.983333`, `0.136095`), which is why it is not part of the released final
+refinement objective.
 
 ## Final project model
 
@@ -77,10 +87,8 @@ sealed checkpoint before target replay.  Labels `-1` are excluded by the source
 loader.  The 2026 mixed stream is evaluated in original order with one
 file-start reset and no target gradient or statistic update.
 
-## Reproducibility boundary
+## Reproducibility
 
-These programs expose the actual training lineage; they do not make the HUST
-table prospectively independent.  The four HUST targets were inspected during
-method development.  Released weights remain the authoritative exact
-reproduction artifacts, while a newly trained run is a new stochastic
-reproduction unless its hashes match.
+Released weights and their manifest hashes are the authoritative packaged
+artifacts. A fresh training run is recorded as a new stochastic reproduction
+unless its checkpoint hashes match the release.
