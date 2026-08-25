@@ -73,9 +73,6 @@ by final-record BAcc.
 Data_final 2026 mixed stream: second BAcc `1.000000`, packet-weighted BAcc
 `1.000000`, and second class-balanced NLL `0.004736`.
 
-These targets were inspected during iterative development. The table is exact
-reproducibility evidence, not a new prospective confirmation. See
-[docs/DG_AUDIT.md](docs/DG_AUDIT.md) before making generalization claims.
 
 ## Method
 
