@@ -37,9 +37,9 @@ representation. It then refines that representation with whole-source
 pseudo-held-bearing classification only. The final refinement deliberately
 does not retain an auxiliary forecast loss: the released ablation found that
 forecast retention worsened the held-domain online risk, while dynamics
-pretraining itself remained necessary. Thus the final trunk is AI-trained and
-dynamical, although it is not purely self-supervised or a discovered physical
-law.
+pretraining itself remained necessary. Thus the final trunk is a learned
+dynamical architecture, although it is not purely self-supervised or a
+discovered physical law.
 
 ## Two learned readouts
 
