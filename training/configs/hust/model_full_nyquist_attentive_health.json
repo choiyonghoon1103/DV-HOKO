@@ -1,0 +1,35 @@
+{
+  "schema": "hoko-full-nyquist-mode-attention-health-hust-lodo-v1",
+  "status": "retrospective frozen-trunk health mode-attention falsifier",
+  "bearings": ["6205", "6206", "6207", "6208"],
+  "classes": ["N", "I", "O", "B"],
+  "dynamics_config": "configs/hust/dynamics_full_nyquist.json",
+  "refinement_config": "configs/hust/model_full_nyquist_meta_refine.json",
+  "metric_config": "configs/hust/model_full_nyquist_query_adaptive.json",
+  "refined_dynamics_root": "artifacts/hust_full_nyquist_meta_refine_v1",
+  "operation_metric_root": "artifacts/hust_full_nyquist_query_adaptive_v1/metric",
+  "subband_cache_root": "artifacts/hust/subband_cache",
+  "runtime": {"fourier_backend": "explicit_selected_dft"},
+  "state_training": {
+    "seed": 9401,
+    "updates": 500,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 5.0,
+    "hidden_width": 48,
+    "output_width": 12,
+    "attention_heads": 4,
+    "log_every": 50,
+    "checkpoint": "terminal_only"
+  },
+  "contract": {
+    "single_intervention": "replace uniform order averaging in the health view with learned full-Nyquist mode attention",
+    "shared_koopman_mori_trunk_frozen": true,
+    "operation_metric_frozen": true,
+    "manual_health_order_selection": false,
+    "manual_fault_frequency_formula_used": false,
+    "held_bearing_used_for_fit": false,
+    "target_statistics_used": false,
+    "result_is_retrospective_development_evidence": true
+  }
+}

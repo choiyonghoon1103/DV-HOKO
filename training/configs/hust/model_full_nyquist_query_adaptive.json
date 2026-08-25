@@ -1,0 +1,37 @@
+{
+  "schema": "hoko-full-angular-nyquist-query-adaptive-scm-hust-lodo-v1",
+  "status": "per-observation conditional mode attention over full angular Nyquist support",
+  "bearings": ["6205", "6206", "6207", "6208"],
+  "classes": ["N", "I", "O", "B"],
+  "base_config": "configs/hust/dynamics_full_nyquist.json",
+  "base_checkpoint_root": "artifacts/hust_full_nyquist_v1/dynamics",
+  "subband_cache_root": "artifacts/hust/subband_cache",
+  "meta_metric": {
+    "type": "query_adaptive_hierarchical_attention_raw_field_learned_feature_metric",
+    "statistic_width": 12,
+    "hidden_width": 16,
+    "attention_heads": 4,
+    "order_weight_normalization": "softmax"
+  },
+  "optimization": {
+    "metric_seed": 7601,
+    "metric_updates": 300,
+    "metric_learning_rate": 0.0003,
+    "metric_weight_decay": 0.0001,
+    "metric_objective": "maximum_identity_regret",
+    "gradient_clip_norm": 5.0,
+    "log_every": 50,
+    "checkpoint": "terminal_only"
+  },
+  "contract": {
+    "full_angular_nyquist_support": true,
+    "manual_fault_order_crop_used": false,
+    "query_conditioned_mode_attention": true,
+    "query_parameters_updated_at_inference": false,
+    "query_history_or_target_statistics_stored": false,
+    "selection_uses_source_pseudoheld_risk_only": true,
+    "held_bearing_used_for_fit": false,
+    "target_statistics_used": false,
+    "result_is_retrospective_development_evidence": true
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "hoko-full-angular-nyquist-hust-lodo-v1",
+  "status": "source-only full-observable-order support intervention",
+  "bearings": ["6205", "6206", "6207", "6208"],
+  "classes": ["N", "I", "O", "B"],
+  "observation": {
+    "input_type": "learned_uniform_subband_koopman_mori",
+    "carrier_bands": 4,
+    "samples_per_revolution": 64,
+    "window_revolutions": 4.0,
+    "hop_revolutions": 0.5,
+    "minimum_order": 0.25,
+    "maximum_order": 32.0,
+    "order_step": 0.25
+  },
+  "learned_filterbank": {
+    "sample_count": 51200,
+    "sample_rate_hz": 51200,
+    "uniform_subband_atoms": 32,
+    "coordinate_harmonics": 8,
+    "sinkhorn_iterations": 20,
+    "initial_fixed_band_edges": false
+  },
+  "architecture": {
+    "field_width": 12,
+    "embedding_width": 48,
+    "operation_count": 3,
+    "attention_heads": 4,
+    "temporal_layers": 1,
+    "feedforward_width": 96,
+    "mixture_count": 4,
+    "minimum_query_width_orders": 0.15,
+    "maximum_query_width_orders": 1.5,
+    "forecast_horizons": 2,
+    "forecast_distribution": "deterministic",
+    "transport_type": "fixed_rotation",
+    "operator_loss_weight": 0.0
+  },
+  "optimization": {
+    "seed": 6101,
+    "field_seed": 6101,
+    "field_pretrain_updates": 1000,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 5.0,
+    "log_every": 100,
+    "checkpoint": "terminal_only"
+  },
+  "contract": {
+    "single_intervention": "replace the manually cropped 0.5-to-12 order support with the complete angular Nyquist support",
+    "order_resolution_is_inverse_window_revolutions": true,
+    "fault_specific_order_crop_used": false,
+    "exact_angular_group_action_retained": true,
+    "held_bearing_used_for_fit": false,
+    "target_statistics_used": false
+  }
+}

@@ -120,6 +120,26 @@ class DualViewKoopmanMoriField(nn.Module):
                 nn.GELU(), nn.Linear(embedding_width, state_width),
             )
 
+    def field_parameters(self):
+        """Parameters fitted by the class-free Koopman--Mori forecast stage."""
+
+        for module in (
+            self.path_embedding,
+            self.time_embedding,
+            self.temporal_encoder,
+            self.order_embedding,
+            self.field_decoder,
+            self.memory_forecast_head,
+        ):
+            yield from module.parameters()
+
+    def state_parameters(self):
+        """Parameters fitted by the health-state stage."""
+
+        if self.state_decoder is None:
+            return
+        yield from self.state_decoder.parameters()
+
     @staticmethod
     def _coordinate(value: Tensor, divisor: float) -> Tensor:
         normalized = value / divisor
