@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "method": "DV-HOKO",
+  "files": {
+    "hust/heldout_6205.pt": "a0babf3998fab7566a5eba1c5f79ad9d893af20a72975a75d46f128c1e9709e4",
+    "hust/heldout_6206.pt": "be1923e7b5abbe53efacca68e29647dc4bb8865a462e7605989c7fb0155622ba",
+    "hust/heldout_6207.pt": "7949146c75050e79f07e1c57c28756e8587d5383690c1136ca04f0f6ee978e17",
+    "hust/heldout_6208.pt": "57f2c37f8457854a687c9fc3dfa390ffe054a54f0a1cc027e5c91cac3da9b0d7",
+    "final/model.pt": "04ba51ee00c05207944d0e61091bff144a8c98616c2f2d0885481f2792785579"
+  }
+}

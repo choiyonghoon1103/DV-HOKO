@@ -1,0 +1,37 @@
+{
+  "method": "DV-HOKO",
+  "dataset": "Data_final",
+  "observation": {
+    "spectral_atoms": 5,
+    "coordinates_per_atom": 64,
+    "carrier_bands": 4,
+    "samples_per_unit": 16,
+    "window_units": 2.0,
+    "hop_units": 0.5,
+    "minimum_mode": 0.5,
+    "maximum_mode": 7.5,
+    "mode_step": 0.5
+  },
+  "learned_filterbank": {
+    "coordinate_harmonics": 4,
+    "sinkhorn_iterations": 20
+  },
+  "architecture": {
+    "field_width": 12,
+    "state_width": 12,
+    "embedding_width": 48,
+    "operation_count": 1,
+    "attention_heads": 4,
+    "temporal_layers": 1,
+    "feedforward_width": 96,
+    "mixture_count": 4,
+    "minimum_query_width": 0.15,
+    "maximum_query_width": 1.5,
+    "forecast_horizons": 2
+  },
+  "inference": {
+    "evidence_window_seconds": 9,
+    "target_adaptation": false,
+    "mixed_file_reset": "file_start_only"
+  }
+}

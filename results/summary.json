@@ -1,0 +1,21 @@
+{
+  "method": "DV-HOKO",
+  "hust": {
+    "targets": {
+      "6205": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 1.0, "nll": 0.0710722210},
+      "6206": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9583333333, "nll": 0.1323210271},
+      "6207": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9583333333, "nll": 0.1640425643},
+      "6208": {"balanced_accuracy": 1.0, "prefix_balanced_accuracy": 0.9916666667, "nll": 0.1657497603}
+    },
+    "mean_balanced_accuracy": 1.0,
+    "worst_balanced_accuracy": 1.0,
+    "mean_prefix_balanced_accuracy": 0.9770833333,
+    "mean_nll": 0.1332963932
+  },
+  "data_final": {
+    "mixed_second_balanced_accuracy": 1.0,
+    "mixed_packet_balanced_accuracy": 1.0,
+    "mixed_second_class_balanced_nll": 0.0047358925,
+    "background_reference_false_positive_rate": 0.0
+  }
+}
