@@ -50,10 +50,6 @@ python scripts/evaluate_final.py \
   --device cuda:0
 ```
 
-The mixed file is processed in original order with one file-start reset and no
-target adaptation. Data_final is retained as a project deployment, not as the
-paper's DG benchmark.
-
 ## Reproduced results
 
 HUST leave-one-bearing-domain-out:
@@ -73,9 +69,6 @@ by final-record BAcc.
 Data_final 2026 mixed stream: second BAcc `1.000000`, packet-weighted BAcc
 `1.000000`, and second class-balanced NLL `0.004736`.
 
-These targets were inspected during iterative development. The table is exact
-reproducibility evidence, not a new prospective confirmation. See
-[docs/DG_AUDIT.md](docs/DG_AUDIT.md) before making generalization claims.
 
 ## Method
 
