@@ -38,10 +38,6 @@ python scripts/evaluate_hust.py \
   --device cuda:0
 ```
 
-The target `fs` value is an observed deployment covariate used for angular
-resampling; it is not fitted or averaged with target data. No target label,
-target statistic, or target gradient is used.
-
 ## Data_final project inference
 
 ```bash
