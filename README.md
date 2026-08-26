@@ -1,6 +1,6 @@
-# DV-HOKO
+# HOKO
 
-**Dual-View Health–Operation Koopman Observer**.
+**Health–Operation Koopman Observer**.
 The primary research setting is **source-only domain generalization (DG)**:
 the class ontology is known, but the target bearing is excluded from fitting.
 
